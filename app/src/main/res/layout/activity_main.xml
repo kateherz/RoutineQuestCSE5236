@@ -22,50 +22,50 @@
 
         <ImageButton
             android:id="@+id/chicken"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
             android:contentDescription="@string/icon_prompt"
             android:src = "@drawable/chicken"/>
         <ImageButton
             android:id="@+id/cupcake"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
             android:contentDescription="@string/icon_prompt"
             android:src = "@drawable/cupcake"/>
         <ImageButton
             android:id="@+id/dinosaur"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
             android:contentDescription="@string/icon_prompt"
             android:src = "@drawable/dinosaur"/>
         <ImageButton
             android:id="@+id/dog"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
             android:contentDescription="@string/icon_prompt"
             android:src = "@drawable/dog"/>
         <ImageButton
             android:id="@+id/egg"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
             android:contentDescription="@string/icon_prompt"
             android:src = "@drawable/egg"/>
         <ImageButton
             android:id="@+id/noodles"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
             android:contentDescription="@string/icon_prompt"
             android:src = "@drawable/incons"/>
         <ImageButton
             android:id="@+id/knight"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
             android:contentDescription="@string/icon_prompt"
             android:src = "@drawable/knight"/>
         <ImageButton
             android:id="@+id/smiley_face"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
             android:contentDescription="@string/icon_prompt"
             android:src = "@drawable/smiley_face"/>
     </GridLayout>
