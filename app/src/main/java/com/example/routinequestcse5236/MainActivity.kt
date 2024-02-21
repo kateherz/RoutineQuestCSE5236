@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until gridLayout.childCount) {
             val button: ImageButton = gridLayout.getChildAt(i) as ImageButton
             val buttonID = resources.getResourceEntryName(button.id)
-
+            //set up view model and repo classes for later checkpoints
             button.setOnClickListener {
                 Log.d("ButtonClicked", "String Resource: $buttonID")
             }

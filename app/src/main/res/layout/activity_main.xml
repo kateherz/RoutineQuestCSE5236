@@ -7,8 +7,10 @@
     android:gravity="center"
     android:orientation="vertical">
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/baby_pink"
+        android:layout_gravity="center"
         android:padding="24dp"
         android:textSize="32sp"
         android:text="@string/icon_prompt" />
@@ -17,6 +19,7 @@
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/baby_pink"
         android:layout_gravity="center"
         android:columnCount="4"
         android:rowCount="2">
