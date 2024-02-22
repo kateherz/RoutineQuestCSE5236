@@ -3,4 +3,5 @@
     <string name="question_text">Enter your name here</string>
     <string name="next_button">Next</string>
     <string name="input_name_toast">Name entered: </string>
+    <string name="icon_prompt">Select your icon:</string>
 </resources>
