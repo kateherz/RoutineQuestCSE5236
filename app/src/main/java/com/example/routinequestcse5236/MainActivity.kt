@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             //do something in response to the click here
             Toast.makeText(
                 this,
-                R.string.input_name_toast,
+                R.string.input_name_toast, //replace this with the name user entered
                 Toast.LENGTH_SHORT
             ).show()
         }
