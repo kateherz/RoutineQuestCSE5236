@@ -7,106 +7,19 @@
     android:gravity="center"
     android:orientation="vertical"> <!--Name over next button-->
 
-    <!--This is a text box-->
-    <EditText
-        android:id="@+id/display_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:inputType="textPersonName|textCapWords"
-        android:hint="@string/question_text"
-        tools:ignore="LabelFor"
-        android:autofillHints="@string/question_text" />
-
-    <TextView
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/baby_pink"
-        android:layout_gravity="center"
-        android:padding="24dp"
-        android:textSize="32sp"
-        android:text="@string/icon_prompt" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/baby_pink"
-        android:layout_gravity="center"
-        android:columnCount="4"
-        android:rowCount="2">
+        <include
+            android:id="@+id/signup"
+            layout="@layout/fragment_signup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-        <ImageButton
-            android:id="@+id/chicken"
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:contentDescription="@string/icon_prompt"
-            android:src = "@drawable/chicken"/>
-        <ImageButton
-            android:id="@+id/cupcake"
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/icon_prompt"
-            android:src = "@drawable/cupcake"/>
-        <ImageButton
-            android:id="@+id/dinosaur"
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/icon_prompt"
-            android:src = "@drawable/dinosaur"/>
-        <ImageButton
-            android:id="@+id/dog"
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/icon_prompt"
-            android:src = "@drawable/dog"/>
-        <ImageButton
-            android:id="@+id/egg"
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/icon_prompt"
-            android:src = "@drawable/egg"/>
-        <ImageButton
-            android:id="@+id/noodles"
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/icon_prompt"
-            android:src = "@drawable/incons"/>
-        <ImageButton
-            android:id="@+id/knight"
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/icon_prompt"
-            android:src = "@drawable/knight"/>
-        <ImageButton
-            android:id="@+id/smiley_face"
-            android:layout_width="100dip"
-            android:layout_height="100dip"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/icon_prompt"
-            android:src = "@drawable/smiley_face"/>
-    </GridLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
-    <!--This is the next button-->
-    <Button
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next_button" />
 
 </LinearLayout>
