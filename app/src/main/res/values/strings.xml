@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RoutineQuestCSE5236</string>
+    <string name="icon_prompt">Select your icon:</string>
 </resources>
