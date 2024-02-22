@@ -1,5 +1,6 @@
 package com.example.routinequestcse5236
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,9 +36,11 @@ class SignupFragment : Fragment() {
             Log.d("", "Password: " + mPasswordEditText?.text.toString())
         }
 
-        signupButton.setOnClickListener { v ->
+       signupButton.setOnClickListener { v ->
             Log.d("", "Name: " + mUsernameEditText?.text.toString())
             Log.d("", "Password: " + mPasswordEditText?.text.toString())
+           val intent = Intent(v.context, AvatarCreationActivity::class.java)
+           startActivity(intent)
         }
 
         return v
