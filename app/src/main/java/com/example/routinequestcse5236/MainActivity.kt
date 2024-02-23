@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
     //function onCreate called when an instance of the activity subclass is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("", "Main Activity onCreate()")
+        Log.d("MainActivity", "onCreate()")
         setContentView(R.layout.activity_main)
         val fm = supportFragmentManager
         var fragment = fm.findFragmentById(R.id.signup)
@@ -22,11 +22,6 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
-       /* val signupButton: Button = findViewById<Button>(R.id.signup_button)
-        signupButton.setOnClickListener {
-
-
-        }*/
     }
     override fun onPause() {
         super.onPause()
