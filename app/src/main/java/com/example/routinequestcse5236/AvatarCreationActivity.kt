@@ -25,6 +25,11 @@ class AvatarCreationActivity : AppCompatActivity() {
         setupIconGrid()
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d("method call","pause method called")
+    }
+
     private fun setupIconGrid() {
         val gridLayout: GridLayout = findViewById(R.id.gridLayout)
         for (i in 0 until gridLayout.childCount) {
