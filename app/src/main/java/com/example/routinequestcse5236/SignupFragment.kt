@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -39,6 +38,18 @@ class SignupFragment : Fragment() {
        signupButton.setOnClickListener { v ->
             Log.d("SignupFragment", "Name: " + mUsernameEditText?.text.toString())
             Log.d("SignupFragment", "Password: " + mPasswordEditText?.text.toString())
+           val db = DBHelper(this,null)//create DB Helper class and add context to it
+
+           val name = mUsernameEditText?.text.toString()
+           val pswd = mPasswordEditText?.text.toString()
+
+           //calling method to add to database
+           db.addName(name, pswd)
+
+           Log.d("SignupFragment", "$name added to database")
+           mUsernameEditText?.text?.clear()
+           mPasswordEditText?.text?.clear()
+
            val intent = Intent(v.context, AvatarCreationActivity::class.java)
            startActivity(intent)
         }
