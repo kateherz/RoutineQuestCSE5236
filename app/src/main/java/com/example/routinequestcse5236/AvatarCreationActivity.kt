@@ -1,4 +1,5 @@
 package com.example.routinequestcse5236
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -20,12 +21,8 @@ class AvatarCreationActivity : AppCompatActivity() {
 
         nextButton = findViewById(R.id.next_button)
         nextButton.setOnClickListener {
-            //do something in response to the click here
-            Toast.makeText(
-                this,
-                displayName.text.toString(), //replace this with the name user entered
-                Toast.LENGTH_SHORT
-            ).show()
+            val intent = Intent(this, AvatarCreationConfirmation::class.java)
+            startActivity(intent)
         }
         setupIconGrid()
     }
