@@ -5,4 +5,5 @@
     <string name="input_name_toast">Name entered: </string>
     <string name="icon_prompt">Select your icon:</string>
     <string name="Confirmation">LET\'S GO!</string>
+    <string name="okay">Okay!</string>
 </resources>
