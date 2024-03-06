@@ -27,6 +27,13 @@ class MainMenuActivity: AppCompatActivity() {
 
     private fun loadTaskFragments() {
         Log.d("loadTaskFragments", "loading task fragments")
+        val fm = supportFragmentManager
+        var fragment = fm.findFragmentById(R.id.routines)
+        if (fragment == null) {
+            fragment = MainRoutinesFragment()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.routines, fragment).commit()
+        }
         //TODO: figure this out
     }
 
