@@ -1,6 +1,4 @@
 package com.example.routinequestcse5236
-
-//import androidx.databinding.tool.util.StringUtils
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
