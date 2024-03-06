@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal">
 
     <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/activity_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <ImageView
             android:id="@+id/profilePicture"
@@ -43,5 +44,24 @@
             android:textSize="32sp"
             android:textColor="@android:color/black"
             />
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/levelTextView"
+            android:layout_alignBottom="@id/levelTextView" />
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/space"
+            android:layout_centerHorizontal="true"
+            android:text="WELCOME NAME! LET'S TACKLE TODAY"
+            android:textSize="32sp"
+            android:layout_marginTop="50dp"
+            android:textColor="@android:color/black"
+            />
     </RelativeLayout>
+
 </LinearLayout>
