@@ -62,16 +62,10 @@
             android:layout_marginTop="50dp"
             android:textColor="@android:color/black"
             />
-        <Button
-            android:id="@+id/addMoreTasks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/welcome"
-            android:text="@string/add_more_tasks"/>
 
         <include
-            android:id="@+id/tasks"
-            layout="@layout/task_main_menu"
+            android:id="@+id/routines"
+            layout="@layout/fragment_routines"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>
