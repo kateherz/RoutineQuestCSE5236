@@ -1,13 +1,24 @@
 package com.example.routinequestcse5236
 
-data class UserAccount (val username: String, val passwd: String){
+import androidx.annotation.Keep
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Fts4
+import androidx.room.PrimaryKey
+import java.util.Objects
+@Fts4
+@Keep
+@Entity(tableName = "useraccount")
+data class UserAccount (@field:ColumnInfo(name = "name") var username: String, @field:ColumnInfo(name = "password") var passwd: String){
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "rowid")
+    var rowid = 0
 
-
-    fun getName(): String? {
+    fun getName(): String {
         return username
     }
 
-    fun getPassword(): String? {
+    fun getPassword(): String {
         return passwd
     }
 
@@ -23,12 +34,11 @@ data class UserAccount (val username: String, val passwd: String){
                 "; name='" + username + '\'' +
                 "; password='" + passwd + '\'' +
                 '}'
+        //TO DO: add rowId
     }
 
     override fun hashCode(): Int {
-        var result = username.hashCode()
-        result = 31 * result + passwd.hashCode()
-        return result
+        return Objects.hash(rowid, username, passwd)
     }
 }
 
