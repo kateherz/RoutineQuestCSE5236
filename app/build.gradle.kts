@@ -50,7 +50,8 @@ implementation("androidx.activity:activity-ktx:$rootProject.activityVersion")
 // Room components
 implementation("androidx.room:room-ktx:$rootProject.roomVersion")
     implementation("androidx.room:room-common:2.6.1")
-    kapt("androidx.room:room-compiler:$rootProject.roomVersion")
+    implementation("androidx.databinding:compiler:3.2.0-alpha11")
+kapt("androidx.room:room-compiler:$rootProject.roomVersion")
 androidTestImplementation("androidx.room:room-testing:$rootProject.roomVersion")
 
 // Lifecycle components
