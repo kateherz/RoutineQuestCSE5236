@@ -52,7 +52,7 @@ implementation("androidx.room:room-ktx:$rootProject.roomVersion")
     implementation("androidx.room:room-common:2.6.1")
     implementation("androidx.databinding:compiler:3.2.0-alpha11")
 //kapt("androidx.room:room-compiler:$rootProject.roomVersion")
-    kapt("androidx.room:room-compiler:2.3.0")
+    kapt("androidx.room:room-compiler:2.4.3")
 
     androidTestImplementation("androidx.room:room-testing:$rootProject.roomVersion")
 
