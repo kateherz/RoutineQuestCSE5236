@@ -25,7 +25,8 @@
             android:name=".AvatarCreationActivity"/>
         <activity
             android:name=".AvatarCreationConfirmation"/>
-        <activity android:name=".MainMenuActivity"/>
+        <activity
+            android:name=".MainMenuActivity"/>
     </application>
 
 </manifest>

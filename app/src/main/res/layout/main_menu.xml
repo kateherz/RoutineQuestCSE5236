@@ -67,6 +67,7 @@
             android:id="@+id/routines"
             layout="@layout/fragment_routines"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@id/welcome"/>
     </RelativeLayout>
 </LinearLayout>
