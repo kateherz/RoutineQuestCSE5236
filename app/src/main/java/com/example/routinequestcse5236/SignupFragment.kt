@@ -41,6 +41,8 @@ class SignupFragment : Fragment() {
                 .signInWithEmailAndPassword(mEmailEditText?.text.toString(), mPasswordEditText?.text.toString())
                 .addOnCompleteListener {
                     Log.d("Firebase", "login successful")
+                    val intent = Intent(v.context, MainMenuActivity::class.java)
+                    startActivity(intent)
                 }
         }
 
