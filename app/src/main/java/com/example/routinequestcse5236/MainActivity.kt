@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+
     //function onCreate called when an instance of the activity subclass is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val fm = supportFragmentManager
         var fragment = fm.findFragmentById(R.id.signup)
+
 
         if (fragment == null) {
             fragment = SignupFragment()

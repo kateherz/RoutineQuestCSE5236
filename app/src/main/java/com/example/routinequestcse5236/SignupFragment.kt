@@ -10,12 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 
 
 class SignupFragment : Fragment() {
 
-    private var mUsernameEditText: EditText? = null
+    private var mEmailEditText: EditText? = null
     private var mPasswordEditText: EditText? = null
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,22 +27,36 @@ class SignupFragment : Fragment() {
         Log.d("SignupFragment", "onCreateView()")
         var v: View = inflater.inflate(R.layout.fragment_signup, container, false)
 
-        mUsernameEditText = v.findViewById<EditText>(R.id.username_text)
+        mEmailEditText = v.findViewById<EditText>(R.id.email_text)
         mPasswordEditText = v.findViewById<EditText>(R.id.password_text)
+        firebaseAuth = FirebaseAuth.getInstance()
 
         val loginButton: Button = v.findViewById<Button>(R.id.login_button)
         val signupButton: Button = v.findViewById<Button>(R.id.signup_button)
 
         loginButton.setOnClickListener { v ->
-            Log.d("SignupFragment", "Name: " + mUsernameEditText?.text.toString())
+            Log.d("SignupFragment", "Email: " + mEmailEditText?.text.toString())
             Log.d("SignupFragment", "Password: " + mPasswordEditText?.text.toString())
+            firebaseAuth
+                .signInWithEmailAndPassword(mEmailEditText?.text.toString(), mPasswordEditText?.text.toString())
+                .addOnCompleteListener {
+                    Log.d("Firebase", "login successful")
+                }
         }
 
        signupButton.setOnClickListener { v ->
-            Log.d("SignupFragment", "Name: " + mUsernameEditText?.text.toString())
+            Log.d("SignupFragment", "Email: " + mEmailEditText?.text.toString())
             Log.d("SignupFragment", "Password: " + mPasswordEditText?.text.toString())
-           val intent = Intent(v.context, AvatarCreationActivity::class.java)
-           startActivity(intent)
+           firebaseAuth
+               .createUserWithEmailAndPassword(mEmailEditText?.text.toString(), mPasswordEditText?.text.toString())
+               .addOnCompleteListener {
+                   if (it.isSuccessful) {
+                       Log.d("Firebase", "sign up successful")
+                       val intent = Intent(v.context, AvatarCreationActivity::class.java)
+                       startActivity(intent)
+                   }
+               }
+
         }
 
         return v
