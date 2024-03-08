@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "746239907325",
+    "project_id": "routine-quest",
+    "storage_bucket": "routine-quest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746239907325:android:53a47f10764d41877f7594",
+        "android_client_info": {
+          "package_name": "com.example.routinequestcse5236"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgn8e6WIflHA3Pr74EqlbdikyTdF9ThnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
