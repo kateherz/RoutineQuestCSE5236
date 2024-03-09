@@ -1,4 +1,4 @@
-package com.example.routinequestcse5236
+package com.example.routinequestcse5236.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -6,8 +6,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.routinequestcse5236.R
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,14 +22,14 @@ class AvatarCreationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("AvatarCreationActivity", "onCreate()")
-        setContentView(R.layout.avatar_creation)
+        setContentView(R.layout.activity_avatar_creation)
 
 
         displayName = findViewById(R.id.display_name)
 
         nextButton = findViewById(R.id.next_button)
         nextButton.setOnClickListener {
-            val intent = Intent(this, AvatarCreationConfirmation::class.java)
+            val intent = Intent(this, AvatarCreationConfirmationActivity::class.java)
             startActivity(intent)
         }
         setupIconGrid()

@@ -1,16 +1,11 @@
-package com.example.routinequestcse5236
+package com.example.routinequestcse5236.ui.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.User
-import com.google.firebase.firestore.firestore
+import com.example.routinequestcse5236.R
+import com.example.routinequestcse5236.ui.fragments.MainRoutinesFragment
 
 class MainMenuActivity: AppCompatActivity() {
     private lateinit var createButton: Button
@@ -19,7 +14,7 @@ class MainMenuActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("MainMenuActivity", "onCreate()")
-        setContentView(R.layout.main_menu)
+        setContentView(R.layout.activity_main_menu)
         setUpCreateTasks()
         loadTaskFragments()
     }

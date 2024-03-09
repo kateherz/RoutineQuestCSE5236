@@ -1,4 +1,4 @@
-package com.example.routinequestcse5236
+package com.example.routinequestcse5236.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,9 +8,11 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.routinequestcse5236.R
+import com.example.routinequestcse5236.model.Routine
+import com.example.routinequestcse5236.model.RoutineAdapter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions

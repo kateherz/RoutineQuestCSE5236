@@ -1,15 +1,17 @@
-package com.example.routinequestcse5236
+package com.example.routinequestcse5236.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.example.routinequestcse5236.R
+import com.example.routinequestcse5236.ui.activities.AvatarCreationActivity
+import com.example.routinequestcse5236.ui.activities.MainMenuActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

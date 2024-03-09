@@ -1,10 +1,11 @@
-package com.example.routinequestcse5236
+package com.example.routinequestcse5236.model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.routinequestcse5236.R
 
 class RoutineAdapter(private val routines: ArrayList<Routine>) :
     RecyclerView.Adapter<RoutineAdapter.RoutineViewHolder>() {
@@ -17,7 +18,7 @@ class RoutineAdapter(private val routines: ArrayList<Routine>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutineViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.routine_item, parent, false)
+            .inflate(R.layout.list_item_routine, parent, false)
         return RoutineViewHolder(itemView)
     }
 
