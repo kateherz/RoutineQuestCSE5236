@@ -2,7 +2,9 @@ package com.example.routinequestcse5236.ui.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.routinequestcse5236.R
 import com.example.routinequestcse5236.ui.fragments.MainRoutinesFragment
@@ -37,5 +39,8 @@ class MainMenuActivity: AppCompatActivity() {
         }
         //TODO: figure this out
     }
-
+    public fun onLayoutClick(view: View) {
+        Log.d(" MainRoutinesFragment", "RoutineClicked")
+        Toast.makeText(view.context, "Layout clicked", Toast.LENGTH_SHORT).show()
+    }
 }
