@@ -41,7 +41,3 @@ data class Routine(val title: String, var tasks: ArrayList<Task> = arrayListOf<T
         return tasks.size
     }
 }
-
-enum class TaskDifficulty {EASY, MEDIUM, HARD, EXPERT}
-
-data class Task(val name: String, val difficulty: TaskDifficulty, var completed: Boolean = false)
