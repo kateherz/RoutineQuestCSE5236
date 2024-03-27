@@ -1,7 +1,39 @@
 package com.example.routinequestcse5236.model
 
-class TaskAdapter(private val tasks: ArrayList<Task>) {
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.routinequestcse5236.R
+
+class TaskAdapter(private val tasks: ArrayList<Task>) :
+    RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val titleEditText: EditText = itemView.findViewById(R.id.taskName)
+        val difficultyDropdown: Spinner = itemView.findViewById(R.id.difficultyDropdown)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.routine_creation_task_list, parent, false)
+        return TaskViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return tasks.size
+    }
+
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        TODO("Not yet implemented")
+    }
 }
+
 
 enum class TaskDifficulty {EASY, MEDIUM, HARD, EXPERT}
 
