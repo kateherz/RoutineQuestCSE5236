@@ -39,7 +39,7 @@ class MainMenuActivity: AppCompatActivity() {
         }
         //TODO: figure this out
     }
-    public fun onLayoutClick(view: View) {
+    fun onLayoutClick(view: View) {
         Log.d(" MainRoutinesFragment", "RoutineClicked")
         Toast.makeText(view.context, "Layout clicked", Toast.LENGTH_SHORT).show()
     }

@@ -1,16 +1,20 @@
 package com.example.routinequestcse5236.ui.fragments
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.routinequestcse5236.R
 import com.example.routinequestcse5236.model.Routine
 import com.example.routinequestcse5236.model.RoutineAdapter
+import com.example.routinequestcse5236.ui.activities.RoutineCreationActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -26,6 +30,25 @@ class MainRoutinesFragment : Fragment() {
     private lateinit var routines : ArrayList<Routine>
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
+
+    private val createRoutineActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                /*routines.add(Routine("task",9))
+                routineAdapter.notifyDataSetChanged()
+                Log.d("addButton", routineAdapter.itemCount.toString())
+                val data = hashMapOf("routines" to routines)
+                databaseRef
+                    .collection("users")
+                    .document(firebaseAuth.currentUser?.email.toString())
+                    .set(data, SetOptions.merge())
+                    .addOnSuccessListener {
+                        Log.d("Firebase", "routines added to user successfully")
+    }*/
+                //val routineData = data?.getParcelableExtra<Routine>("routineData")
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,17 +66,9 @@ class MainRoutinesFragment : Fragment() {
         addButton = v.findViewById<Button>(R.id.addMoreTasks)
         addButton.setOnClickListener {
             Log.d("addButton", "Button Pressed")
-            routines.add(Routine("task",9))
-            routineAdapter.notifyDataSetChanged()
-            Log.d("addButton", routineAdapter.itemCount.toString())
-            val data = hashMapOf("routines" to routines)
-            databaseRef
-                .collection("users")
-                .document(firebaseAuth.currentUser?.email.toString())
-                .set(data, SetOptions.merge())
-                .addOnSuccessListener {
-                    Log.d("Firebase", "routines added to user successfully")
-                }
+            val intent = Intent(requireContext(), RoutineCreationActivity::class.java)
+            createRoutineActivityResult.launch(intent)
+            Log.d("addButton", "intent not launched")
         }
 
         deleteButton = v.findViewById(R.id.deleteTask)

@@ -25,13 +25,23 @@ class RoutineAdapter(private val routines: ArrayList<Routine>) :
     override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
         val currentRoutine = routines[position]
         holder.titleTextView.text = currentRoutine.title
-        holder.tasksTextView.text = "Tasks: ${currentRoutine.tasks}"
+        holder.tasksTextView.text = "Tasks: ${currentRoutine.getTaskSize()}"
         holder.completedCheckbox.isChecked = currentRoutine.completed
     }
 
     override fun getItemCount(): Int {
         return routines.size
     }
+
 }
 
-data class Routine(val title: String, val tasks: Int, var completed: Boolean = false)
+data class Routine(val title: String, var tasks: ArrayList<Task> = arrayListOf<Task>(), var completed: Boolean = false) {
+
+    fun getTaskSize() : Int {
+        return tasks.size
+    }
+}
+
+enum class TaskDifficulty {EASY, MEDIUM, HARD, EXPERT}
+
+data class Task(val name: String, val difficulty: TaskDifficulty, var completed: Boolean = false)

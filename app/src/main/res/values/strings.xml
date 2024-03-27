@@ -8,4 +8,5 @@
     <string name="okay">Okay!</string>
     <string name="avatar_picture">avatar_picture</string>
     <string name="add_more_tasks">+ Add More Quests +</string>
+    <string name="quest_name_prompt">Enter a quest name</string>
 </resources>
