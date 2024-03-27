@@ -9,4 +9,7 @@
     <string name="avatar_picture">avatar_picture</string>
     <string name="add_more_tasks">+ Add More Quests +</string>
     <string name="quest_name_prompt">Enter a quest name</string>
+    <string name="TaskPrompt">What task would you like to conquer?</string>
+    <string name="save_quest">Save Quest</string>
+    <string name="add_more_battles">Add More Battles</string>
 </resources>
