@@ -1,4 +1,6 @@
 package com.example.routinequestcse5236.ui.fragments
+
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,6 +25,7 @@ class MainRoutinesFragment : Fragment() {
     private lateinit var routineAdapter: RoutineAdapter
     private lateinit var addButton: Button
     private lateinit var deleteButton: Button
+    private lateinit var popUpButton: Button
     private lateinit var routines : ArrayList<Routine>
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
@@ -86,6 +89,24 @@ class MainRoutinesFragment : Fragment() {
                         }
                 }
             }
+        }
+
+        popUpButton = v.findViewById(R.id.popUp)
+        popUpButton.setOnClickListener {
+            Log.d("popUpButton", "PopUpButton Pressed")
+            val builder = AlertDialog.Builder(context)
+
+            builder.setMessage("Please shake your phone to confirm you have completed the task")
+            builder.setTitle("Shake to Confirm!")
+            builder.setCancelable(false) //when user clicks outside dialog box, do not exit
+
+            builder.setNegativeButton("Cancel") {
+                    dialog, which -> dialog.cancel()
+            }
+            //if phone shaken, dismiss dialog and set flag to indicate task is done.
+
+            val alertDialog = builder.create()
+            alertDialog.show()
         }
 
         return v
