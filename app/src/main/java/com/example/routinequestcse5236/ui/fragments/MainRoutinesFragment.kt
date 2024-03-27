@@ -1,12 +1,18 @@
 package com.example.routinequestcse5236.ui.fragments
 
 import android.app.AlertDialog
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +25,8 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import java.util.Objects
+import kotlin.math.sqrt
 
 class MainRoutinesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -29,6 +37,13 @@ class MainRoutinesFragment : Fragment() {
     private lateinit var routines : ArrayList<Routine>
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
+
+    //for shake detection
+    private var sensorManager: SensorManager? = null
+    private var acceleration = 0f
+    private var currentAcceleration = 0f
+    private var lastAcceleration = 0f
+    private var userShake: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +57,17 @@ class MainRoutinesFragment : Fragment() {
         databaseRef = Firebase.firestore
         firebaseAuth = FirebaseAuth.getInstance()
         routines = ArrayList()
+
+        //Shake detection set-up
+        sensorManager = context?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        Objects.requireNonNull(sensorManager)!!
+            .registerListener(sensorListener, sensorManager!!
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL)
+
+        acceleration = 10f
+        currentAcceleration = SensorManager.GRAVITY_EARTH
+        lastAcceleration = SensorManager.GRAVITY_EARTH
 
         addButton = v.findViewById<Button>(R.id.addMoreTasks)
         addButton.setOnClickListener {
@@ -103,13 +129,41 @@ class MainRoutinesFragment : Fragment() {
             builder.setNegativeButton("Cancel") {
                     dialog, which -> dialog.cancel()
             }
-            //if phone shaken, dismiss dialog and set flag to indicate task is done.
 
             val alertDialog = builder.create()
             alertDialog.show()
+            //if phone shaken, dismiss dialog and set flag to indicate task is done.
+            if(userShake){
+                //reset variable
+                userShake = false
+                //TO-DO: delete task/mark as done
+                alertDialog.cancel()
+                //notify user of success
+                Toast.makeText(context, "Task Complete!", Toast.LENGTH_LONG).show()
+            }
         }
 
         return v
+    }
+
+    private val sensorListener: SensorEventListener = object : SensorEventListener {
+        override fun onSensorChanged(event: SensorEvent) {
+
+            // Fetching x,y,z values
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+            lastAcceleration = currentAcceleration
+            currentAcceleration = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
+            Log.d("Sensor", "current acceleration: $currentAcceleration")
+            val delta: Float = currentAcceleration - lastAcceleration
+            acceleration = acceleration * 0.9f + delta
+            Log.d("Sensor", "acceleration: $acceleration")
+            if (acceleration > 12) {
+                userShake = true
+            }
+        }
+        override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
