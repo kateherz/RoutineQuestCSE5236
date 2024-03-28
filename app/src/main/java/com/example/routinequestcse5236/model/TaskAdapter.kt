@@ -1,5 +1,6 @@
 package com.example.routinequestcse5236.model
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class TaskAdapter(private val tasks: ArrayList<Task>) :
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        Log.d("task adapter", "to be implemented")
         TODO("Not yet implemented")
     }
 }

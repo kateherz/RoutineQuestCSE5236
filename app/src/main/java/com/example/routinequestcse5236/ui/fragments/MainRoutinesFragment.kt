@@ -63,6 +63,21 @@ class MainRoutinesFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         routines = ArrayList()
 
+        val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                //if (document != null) {
+                    routines = document.data?.get("routines") as ArrayList<Routine>
+                    Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
+                //} else {
+                    Log.d("", "No such document")
+                //}
+            }
+            .addOnFailureListener { exception ->
+                Log.d("", "get failed with ", exception)
+            }
+        //routines = docRef.get().result.data?.get("routines") as ArrayList<Routine>
+
         addButton = v.findViewById<Button>(R.id.addMoreTasks)
         addButton.setOnClickListener {
             Log.d("addButton", "Button Pressed")
@@ -75,23 +90,24 @@ class MainRoutinesFragment : Fragment() {
         deleteButton = v.findViewById(R.id.deleteTask)
         deleteButton.setOnClickListener {
             Log.d("deleteButton", "Button Pressed")
+            Log.d("deleteButton", "current routines: " + routines)
             if (routines.size >= 1) {
                 routines.removeLast()
                 routineAdapter.notifyDataSetChanged()
 
-                if (routines.size == 0) {
-                    val updates = hashMapOf<String, Any>(
-                        "routines" to FieldValue.delete(),
-                    )
-                    databaseRef
-                        .collection("users")
-                        .document(firebaseAuth.currentUser?.email.toString())
-                        .update(updates)
-                        .addOnSuccessListener {
-                            Log.d("Firebase", "routines field deleted successfully")
-                        }
-                }
-                else {
+//                if (routines.size == 0) {
+//                    val updates = hashMapOf<String, Any>(
+//                        "routines" to FieldValue.delete(),
+//                    )
+//                    databaseRef
+//                        .collection("users")
+//                        .document(firebaseAuth.currentUser?.email.toString())
+//                        .update(updates)
+//                        .addOnSuccessListener {
+//                            Log.d("Firebase", "routines field deleted successfully")
+//                        }
+//                }
+//                else {
                     val data = hashMapOf("routines" to routines)
                     databaseRef
                         .collection("users")
@@ -100,7 +116,7 @@ class MainRoutinesFragment : Fragment() {
                         .addOnSuccessListener {
                             Log.d("Firebase", "last routine deleted successfully")
                         }
-                }
+                //}
             }
         }
 

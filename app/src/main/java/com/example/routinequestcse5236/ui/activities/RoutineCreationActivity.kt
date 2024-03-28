@@ -1,15 +1,23 @@
 package com.example.routinequestcse5236.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.routinequestcse5236.R
+import com.example.routinequestcse5236.model.Routine
 import com.example.routinequestcse5236.model.Task
 import com.example.routinequestcse5236.model.TaskAdapter
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.firestore
 
 class RoutineCreationActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -18,6 +26,8 @@ class RoutineCreationActivity : AppCompatActivity() {
     private var taskList: ArrayList<Task> = arrayListOf() //persist in firebase
     private lateinit var addTaskButton: Button
     private lateinit var saveButton : Button
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var databaseRef: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         //why are no views being interacted with?
         super.onCreate(savedInstanceState)
@@ -30,14 +40,39 @@ class RoutineCreationActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         taskAdapter = TaskAdapter(taskList)
         recyclerView.adapter = taskAdapter
+        databaseRef = Firebase.firestore
+        firebaseAuth = FirebaseAuth.getInstance()
         Log.d("RoutineCreationActivity", "OnCreate Views Finished")
-        addTaskButton.setOnClickListener() {v ->
+        addTaskButton.setOnClickListener {
+            Log.d("TaskaddButton", taskAdapter.itemCount.toString())
             taskList.add(Task("",null)) //TODO: Figure out how to update once editTexts are written down
             taskAdapter.notifyDataSetChanged()
-            Log.d("TaskaddButton", taskAdapter.itemCount.toString())
         }
-        saveButton.setOnClickListener() { v ->
+        saveButton.setOnClickListener {v->
             Log.d("SaveButton", "Save button pressed")
+            var routine = Routine(questName?.text.toString(), ArrayList<Task>())
+            val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
+            docRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        var currentRoutines = document.data?.get("routines") as ArrayList<Routine>
+                        Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
+                        currentRoutines.add(routine)
+                        val data = hashMapOf("routines" to currentRoutines)
+                        databaseRef
+                            .collection("users")
+                            .document(firebaseAuth.currentUser?.email.toString())
+                            .set(data, SetOptions.merge())
+                            .addOnSuccessListener {
+                                Log.d("Firebase", "routine added successfully")
+                            }
+                        Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
+                    }
+                }
+
+            val intent = Intent(v.context, MainMenuActivity::class.java)
+            //createRoutineActivityResult.launch(intent)
+            startActivity(intent)
         }
     }
 

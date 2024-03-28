@@ -8,6 +8,7 @@ import android.widget.GridLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.routinequestcse5236.R
+import com.example.routinequestcse5236.model.Routine
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -53,7 +54,8 @@ class AvatarCreationActivity : AppCompatActivity() {
                 Log.d("ButtonClicked", "String Resource: $buttonID")
                 val data = hashMapOf(
                     "avatar" to buttonID,
-                    "username" to displayName.text.toString()
+                    "username" to displayName.text.toString(),
+                    "routines" to ArrayList<Routine>()
                 )
                 databaseRef
                     .collection("users")
