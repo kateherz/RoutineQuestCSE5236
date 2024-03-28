@@ -3,12 +3,9 @@ package com.example.routinequestcse5236.model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.routinequestcse5236.R
 
 class TaskAdapter(private val tasks: ArrayList<Task>) :
@@ -37,4 +34,4 @@ class TaskAdapter(private val tasks: ArrayList<Task>) :
 
 enum class TaskDifficulty {EASY, MEDIUM, HARD, EXPERT}
 
-data class Task(val name: String, val difficulty: TaskDifficulty, var completed: Boolean = false)
+data class Task(val name: String, val difficulty: TaskDifficulty?, var completed: Boolean = false)

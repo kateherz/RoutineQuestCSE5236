@@ -67,7 +67,8 @@ class MainRoutinesFragment : Fragment() {
         addButton.setOnClickListener {
             Log.d("addButton", "Button Pressed")
             val intent = Intent(requireContext(), RoutineCreationActivity::class.java)
-            createRoutineActivityResult.launch(intent)
+            //createRoutineActivityResult.launch(intent)
+            startActivity(intent)
             Log.d("addButton", "intent not launched")
         }
 
