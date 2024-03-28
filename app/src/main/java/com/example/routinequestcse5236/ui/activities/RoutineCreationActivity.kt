@@ -31,10 +31,13 @@ class RoutineCreationActivity : AppCompatActivity() {
         taskAdapter = TaskAdapter(taskList)
         recyclerView.adapter = taskAdapter
         Log.d("RoutineCreationActivity", "OnCreate Views Finished")
-        addTaskButton.setOnClickListener() {
+        addTaskButton.setOnClickListener() {v ->
             taskList.add(Task("",null)) //TODO: Figure out how to update once editTexts are written down
             taskAdapter.notifyDataSetChanged()
             Log.d("TaskaddButton", taskAdapter.itemCount.toString())
+        }
+        saveButton.setOnClickListener() { v ->
+            Log.d("SaveButton", "Save button pressed")
         }
     }
 
