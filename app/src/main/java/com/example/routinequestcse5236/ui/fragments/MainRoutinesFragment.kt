@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ListView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +32,8 @@ class MainRoutinesFragment : Fragment() {
     private lateinit var routines : ArrayList<Routine>
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
+    private lateinit var routineListView: ListView
+    private lateinit var routineArrayAdapter: ArrayAdapter<Routine>
 
     private val createRoutineActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -72,6 +76,10 @@ class MainRoutinesFragment : Fragment() {
                 //} else {
                     Log.d("", "No such document")
                 //}
+                routineListView = v.findViewById(R.id.routine_list_view)
+                routineArrayAdapter = ArrayAdapter(
+                    v.context, android.R.layout.simple_list_item_1, routines)
+                routineListView.adapter = routineArrayAdapter
             }
             .addOnFailureListener { exception ->
                 Log.d("", "get failed with ", exception)
@@ -105,10 +113,13 @@ class MainRoutinesFragment : Fragment() {
                         }
             }
         }
-        recyclerView = v.findViewById(R.id.routinesRecyclerView)
-        routineAdapter = RoutineAdapter(routines)
-        recyclerView.layoutManager = LinearLayoutManager(v.context)
-        recyclerView.adapter = routineAdapter
+
+
+
+//        recyclerView = v.findViewById(R.id.routinesRecyclerView)
+//        routineAdapter = RoutineAdapter(routines)
+//        recyclerView.layoutManager = LinearLayoutManager(v.context)
+//        recyclerView.adapter = routineAdapter
 
         return v
     }

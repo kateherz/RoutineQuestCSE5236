@@ -56,17 +56,16 @@ class RoutineCreationActivity : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         var currentRoutines = document.data?.get("routines") as ArrayList<Routine>
-                        Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
                         currentRoutines.add(routine)
                         val data = hashMapOf("routines" to currentRoutines)
                         databaseRef
                             .collection("users")
                             .document(firebaseAuth.currentUser?.email.toString())
-                            .set(data, SetOptions.merge())
+                            .set(data)
                             .addOnSuccessListener {
                                 Log.d("Firebase", "routine added successfully")
                             }
-                        Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
+                        Log.d("routCreatActiv", "updated routines: ${currentRoutines}")
                     }
                 }
 

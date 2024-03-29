@@ -5,11 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/routinesRecyclerView"
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/routinesRecyclerView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:padding="16dp"/>-->
+
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/routine_list_view"
+        android:dividerHeight="2dp"/>
 
     <Button
         android:id="@+id/addMoreTasks"
