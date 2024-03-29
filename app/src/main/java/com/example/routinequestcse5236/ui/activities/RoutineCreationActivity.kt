@@ -34,7 +34,7 @@ class RoutineCreationActivity : AppCompatActivity() {
         Log.d("RoutineCreationActivity", "OnCreate called")
         setContentView(R.layout.routine_creation)
         questName = findViewById(R.id.routine_name)
-        addTaskButton = findViewById(R.id.addMoreTasks)
+        addTaskButton = findViewById(R.id.addMoreRoutines)
         saveButton = findViewById(R.id.saveButton)
         recyclerView = findViewById(R.id.taskRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -50,7 +50,7 @@ class RoutineCreationActivity : AppCompatActivity() {
         }
         saveButton.setOnClickListener {v->
             Log.d("SaveButton", "Save button pressed")
-            var routine = Routine(questName?.text.toString(), ArrayList<Task>())
+            var routine = Routine(questName?.text.toString(), taskList)
             val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
             docRef.get()
                 .addOnSuccessListener { document ->

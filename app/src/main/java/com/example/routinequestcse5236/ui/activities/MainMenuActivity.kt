@@ -22,6 +22,7 @@ class MainMenuActivity: AppCompatActivity() {
     }
 
     private fun setUpCreateTasks() {
+        Log.d("main menu activity", "set up create tasks")
         createButton = findViewById(R.id.addMoreTasks)
         createButton.setOnClickListener {
             Log.d("setUpCreateTasks", "Create task button created")

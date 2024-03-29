@@ -29,7 +29,7 @@ class TaskAdapter(private val tasks: ArrayList<Task>) :
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         Log.d("task adapter", "to be implemented")
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 }
 

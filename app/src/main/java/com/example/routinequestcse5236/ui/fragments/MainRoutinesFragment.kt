@@ -81,7 +81,7 @@ class MainRoutinesFragment : Fragment() {
         addButton = v.findViewById<Button>(R.id.addMoreTasks)
         addButton.setOnClickListener {
             Log.d("addButton", "Button Pressed")
-            val intent = Intent(requireContext(), RoutineCreationActivity::class.java)
+            val intent = Intent(v.context, RoutineCreationActivity::class.java)
             //createRoutineActivityResult.launch(intent)
             startActivity(intent)
             Log.d("addButton", "intent not launched")
@@ -95,19 +95,6 @@ class MainRoutinesFragment : Fragment() {
                 routines.removeLast()
                 routineAdapter.notifyDataSetChanged()
 
-//                if (routines.size == 0) {
-//                    val updates = hashMapOf<String, Any>(
-//                        "routines" to FieldValue.delete(),
-//                    )
-//                    databaseRef
-//                        .collection("users")
-//                        .document(firebaseAuth.currentUser?.email.toString())
-//                        .update(updates)
-//                        .addOnSuccessListener {
-//                            Log.d("Firebase", "routines field deleted successfully")
-//                        }
-//                }
-//                else {
                     val data = hashMapOf("routines" to routines)
                     databaseRef
                         .collection("users")
@@ -116,9 +103,12 @@ class MainRoutinesFragment : Fragment() {
                         .addOnSuccessListener {
                             Log.d("Firebase", "last routine deleted successfully")
                         }
-                //}
             }
         }
+        recyclerView = v.findViewById(R.id.routinesRecyclerView)
+        routineAdapter = RoutineAdapter(routines)
+        recyclerView.layoutManager = LinearLayoutManager(v.context)
+        recyclerView.adapter = routineAdapter
 
         return v
     }
@@ -126,11 +116,20 @@ class MainRoutinesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("MainRoutinesFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
+        val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                routines = document.data?.get("routines") as ArrayList<Routine>
+                Log.d("main routines fragment on view created", "DocumentSnapshot data: ${routines}")
+            }
+            .addOnFailureListener { exception ->
+                Log.d("", "get failed with ", exception)
+            }
 
-        recyclerView = view.findViewById(R.id.routinesRecyclerView)
-        routineAdapter = RoutineAdapter(routines)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = routineAdapter
+//        recyclerView = view.findViewById(R.id.routinesRecyclerView)
+//        routineAdapter = RoutineAdapter(routines)
+//        recyclerView.layoutManager = LinearLayoutManager(view.context)
+//        recyclerView.adapter = routineAdapter
         Log.d("MainRoutinesFragment", "routineAdapter instantiated")
     }
 }
