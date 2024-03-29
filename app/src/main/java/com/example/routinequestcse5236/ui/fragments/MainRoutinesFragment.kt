@@ -35,25 +35,6 @@ class MainRoutinesFragment : Fragment() {
     private lateinit var routineListView: ListView
     private lateinit var routineArrayAdapter: ArrayAdapter<Routine>
 
-    private val createRoutineActivityResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                /*routines.add(Routine("task",9))
-                routineAdapter.notifyDataSetChanged()
-                Log.d("addButton", routineAdapter.itemCount.toString())
-                val data = hashMapOf("routines" to routines)
-                databaseRef
-                    .collection("users")
-                    .document(firebaseAuth.currentUser?.email.toString())
-                    .set(data, SetOptions.merge())
-                    .addOnSuccessListener {
-                        Log.d("Firebase", "routines added to user successfully")
-    }*/
-                //val routineData = data?.getParcelableExtra<Routine>("routineData")
-            }
-        }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,12 +54,9 @@ class MainRoutinesFragment : Fragment() {
                 //if (document != null) {
                     routines = document.data?.get("routines") as ArrayList<Routine>
                     Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
-                //} else {
-                    Log.d("", "No such document")
-                //}
                 routineListView = v.findViewById(R.id.routine_list_view)
                 routineArrayAdapter = ArrayAdapter(
-                    v.context, android.R.layout.simple_list_item_1, routines)
+                    v.context, R.layout.list_item_routine, R.id.titleTextView, routines)
                 routineListView.adapter = routineArrayAdapter
             }
             .addOnFailureListener { exception ->
@@ -90,7 +68,6 @@ class MainRoutinesFragment : Fragment() {
         addButton.setOnClickListener {
             Log.d("addButton", "Button Pressed")
             val intent = Intent(v.context, RoutineCreationActivity::class.java)
-            //createRoutineActivityResult.launch(intent)
             startActivity(intent)
             Log.d("addButton", "intent not launched")
         }
@@ -114,13 +91,6 @@ class MainRoutinesFragment : Fragment() {
             }
         }
 
-
-
-//        recyclerView = v.findViewById(R.id.routinesRecyclerView)
-//        routineAdapter = RoutineAdapter(routines)
-//        recyclerView.layoutManager = LinearLayoutManager(v.context)
-//        recyclerView.adapter = routineAdapter
-
         return v
     }
 
@@ -137,10 +107,6 @@ class MainRoutinesFragment : Fragment() {
                 Log.d("", "get failed with ", exception)
             }
 
-//        recyclerView = view.findViewById(R.id.routinesRecyclerView)
-//        routineAdapter = RoutineAdapter(routines)
-//        recyclerView.layoutManager = LinearLayoutManager(view.context)
-//        recyclerView.adapter = routineAdapter
         Log.d("MainRoutinesFragment", "routineAdapter instantiated")
     }
 }
