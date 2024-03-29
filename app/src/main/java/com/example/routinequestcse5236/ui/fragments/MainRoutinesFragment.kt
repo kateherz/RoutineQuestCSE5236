@@ -27,11 +27,11 @@ import com.google.firebase.firestore.firestore
 class MainRoutinesFragment : Fragment() {
     private lateinit var addButton: Button
     private lateinit var deleteButton: Button
-    private lateinit var routines : ArrayList<Routine>
+    private lateinit var routines : ArrayList<HashMap<String,Any>>
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
     private lateinit var routineListView: ListView
-    private lateinit var routineArrayAdapter: ArrayAdapter<Routine>
+    private lateinit var routineArrayAdapter: ArrayAdapter<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,17 +44,23 @@ class MainRoutinesFragment : Fragment() {
 
         databaseRef = Firebase.firestore
         firebaseAuth = FirebaseAuth.getInstance()
-        routines = ArrayList()
+        routines = ArrayList<HashMap<String,Any>>()
+        var titles : ArrayList<String> = ArrayList()
 
         val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
         docRef.get()
             .addOnSuccessListener { document ->
                 //if (document != null) {
-                    routines = document.data?.get("routines") as ArrayList<Routine>
+                    routines = document.data?.get("routines") as ArrayList<HashMap<String,Any>>
                     Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
+                routines.forEach() {r ->
+                    Log.d("Titles", r.toString())
+                    titles.add(r["title"].toString())
+                }
+                Log.d("docRef", titles.toString())
                 routineListView = v.findViewById(R.id.routine_list_view)
                 routineArrayAdapter = ArrayAdapter(
-                    v.context, R.layout.list_item_routine, R.id.titleTextView, routines)
+                    v.context, R.layout.list_item_routine, R.id.titleTextView, titles)
                 routineListView.adapter = routineArrayAdapter
             }
             .addOnFailureListener { exception ->
@@ -98,7 +104,7 @@ class MainRoutinesFragment : Fragment() {
         val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
         docRef.get()
             .addOnSuccessListener { document ->
-                routines = document.data?.get("routines") as ArrayList<Routine>
+                routines = document.data?.get("routines") as ArrayList<HashMap<String,Any>>
                 Log.d("main routines fragment on view created", "DocumentSnapshot data: ${routines}")
             }
             .addOnFailureListener { exception ->
