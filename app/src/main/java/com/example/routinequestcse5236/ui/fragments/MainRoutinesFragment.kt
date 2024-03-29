@@ -37,13 +37,14 @@ class MainRoutinesFragment : Fragment() {
     private lateinit var routines : ArrayList<Routine>
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
+    private lateinit var alertDialog: AlertDialog
 
     //for shake detection
     private var sensorManager: SensorManager? = null
     private var acceleration = 0f
     private var currentAcceleration = 0f
     private var lastAcceleration = 0f
-    private var userShake: Boolean = false
+    //private var userShake: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +64,7 @@ class MainRoutinesFragment : Fragment() {
 
         Objects.requireNonNull(sensorManager)!!
             .registerListener(sensorListener, sensorManager!!
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL)
+                .getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_NORMAL)
 
         acceleration = 10f
         currentAcceleration = SensorManager.GRAVITY_EARTH
@@ -130,17 +131,18 @@ class MainRoutinesFragment : Fragment() {
                     dialog, which -> dialog.cancel()
             }
 
-            val alertDialog = builder.create()
+            //make late init or class variable
+            alertDialog = builder.create()
             alertDialog.show()
-            //if phone shaken, dismiss dialog and set flag to indicate task is done.
-            if(userShake){
-                //reset variable
-                userShake = false
-                //TO-DO: delete task/mark as done
-                alertDialog.cancel()
-                //notify user of success
-                Toast.makeText(context, "Task Complete!", Toast.LENGTH_LONG).show()
-            }
+//
+//            if(userShake){
+//                //reset variable
+//                userShake = false
+//                //TO-DO: delete task/mark as done
+//                alertDialog.cancel()
+//                //notify user of success
+//                Toast.makeText(context, "Task Complete!", Toast.LENGTH_LONG).show()
+//            }
         }
 
         return v
@@ -155,12 +157,19 @@ class MainRoutinesFragment : Fragment() {
             val z = event.values[2]
             lastAcceleration = currentAcceleration
             currentAcceleration = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
-            Log.d("Sensor", "current acceleration: $currentAcceleration")
-            val delta: Float = currentAcceleration - lastAcceleration
+            if(acceleration>1 || acceleration<-1) {
+                Log.d("Sensor", "current acceleration: $currentAcceleration")
+            }
+                val delta: Float = currentAcceleration - lastAcceleration
             acceleration = acceleration * 0.9f + delta
-            Log.d("Sensor", "acceleration: $acceleration")
-            if (acceleration > 12) {
-                userShake = true
+            if(acceleration>1 || acceleration<-1) {
+                Log.d("Sensor", "acceleration: $acceleration")
+            }
+            if (acceleration > 5) {
+                //TO-DO: delete task/mark as done
+                alertDialog.cancel()
+                Toast.makeText(context, "Task Complete!", Toast.LENGTH_LONG).show()
+                //close an unregister the listener in onStop or onDestroyview.
             }
         }
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
