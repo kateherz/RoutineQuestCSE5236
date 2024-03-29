@@ -25,8 +25,6 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 
 class MainRoutinesFragment : Fragment() {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var routineAdapter: RoutineAdapter
     private lateinit var addButton: Button
     private lateinit var deleteButton: Button
     private lateinit var routines : ArrayList<Routine>
@@ -78,7 +76,7 @@ class MainRoutinesFragment : Fragment() {
             Log.d("deleteButton", "current routines: " + routines)
             if (routines.size >= 1) {
                 routines.removeLast()
-                routineAdapter.notifyDataSetChanged()
+                routineArrayAdapter.notifyDataSetChanged()
 
                     val data = hashMapOf("routines" to routines)
                     databaseRef
