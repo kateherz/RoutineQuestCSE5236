@@ -61,7 +61,7 @@ class RoutineCreationActivity : AppCompatActivity() {
                         databaseRef
                             .collection("users")
                             .document(firebaseAuth.currentUser?.email.toString())
-                            .set(data)
+                            .set(data, SetOptions.merge())
                             .addOnSuccessListener {
                                 Log.d("Firebase", "routine added successfully")
                             }

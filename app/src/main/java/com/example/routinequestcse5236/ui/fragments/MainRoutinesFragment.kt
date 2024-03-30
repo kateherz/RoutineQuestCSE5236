@@ -55,7 +55,9 @@ class MainRoutinesFragment : Fragment() {
                     Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
                 routines.forEach() {r ->
                     Log.d("Titles", r.toString())
-                    titles.add(r["title"].toString())
+                    var numTasks = r["tasks"].toString().split("{").size - 1
+                    var titleString = r["title"].toString() + "                # of Tasks: " + numTasks.toString()
+                    titles.add(titleString)
                 }
                 Log.d("docRef", titles.toString())
                 routineListView = v.findViewById(R.id.routine_list_view)
