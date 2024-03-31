@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,13 @@ class TaskAdapter(private val tasks: ArrayList<Task>) :
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         Log.d("task adapter", "to be implemented")
+        holder.titleEditText.setText(tasks[position].name)
+
+        val dropdownAdapter : ArrayAdapter<String> = ArrayAdapter(holder.itemView.context,
+            android.R.layout.simple_spinner_dropdown_item,
+            holder.itemView.resources.getStringArray(R.array.dropdown_items))
+        Log.d("task adapter", "instantiated dropdown adapter")
+        holder.difficultyDropdown.adapter=dropdownAdapter
         //TODO("Not yet implemented")
     }
 }
