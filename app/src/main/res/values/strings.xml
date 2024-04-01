@@ -12,6 +12,7 @@
     <string name="TaskPrompt">What task would you like to conquer?</string>
     <string name="save_quest">Save Quest</string>
     <string name="add_more_battles">Add More Battles</string>
+    <string name="back">BACK</string>
     <string-array name="dropdown_items">
         <item>EASY</item>
         <item>MEDIUM</item>
