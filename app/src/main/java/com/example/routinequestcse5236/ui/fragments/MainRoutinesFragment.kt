@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.routinequestcse5236.R
 import com.example.routinequestcse5236.model.Routine
 import com.example.routinequestcse5236.model.RoutineAdapter
+import com.example.routinequestcse5236.model.Task
 import com.example.routinequestcse5236.ui.activities.RoutineCreationActivity
 import com.example.routinequestcse5236.ui.activities.TaskViewActivity
 import com.google.firebase.Firebase
@@ -120,7 +121,12 @@ class MainRoutinesFragment : Fragment() {
             Log.d("Routine List View Click Listener", position.toString() + " clicked")
             val clickedItem = routines[position]
             val intent = Intent(requireContext(), TaskViewActivity::class.java)
-            intent.putExtra("Routine",clickedItem)
+            /*val b : Bundle = Bundle()
+            b.putSerializable("TaskList")*/
+            intent.putExtra("TaskList",clickedItem["tasks"] as ArrayList<Task>)
+            Log.d("Routine List View Click Listener",
+                intent.getSerializableExtra("TaskList").toString()
+            )
             startActivity(intent)
         }
         Log.d("MainRoutinesFragment", "routineAdapter instantiated")
