@@ -107,35 +107,15 @@ class MainRoutinesFragment : Fragment() {
         deleteButton.setOnClickListener {
             Log.d("deleteButton", "Button Pressed")
             Log.d("deleteButton", "current routines: " + routines)
-            if (routines.size >= 1) {
-                routines.removeLast()
-                routineArrayAdapter.notifyDataSetChanged()
-
-                    val data = hashMapOf("routines" to routines)
-                    databaseRef
-                        .collection("users")
-                        .document(firebaseAuth.currentUser?.email.toString())
-                        .set(data, SetOptions.merge())
-                        .addOnSuccessListener {
-                            Log.d("Firebase", "last routine deleted successfully")
-                        }
-            }
-        }
-
-        popUpButton = v.findViewById(R.id.popUp)
-        popUpButton.setOnClickListener {
-            Log.d("popUpButton", "PopUpButton Pressed")
             val builder = AlertDialog.Builder(context)
 
-            builder.setMessage("Please shake your phone to confirm you have completed the task")
+            builder.setMessage("Please shake your phone to confirm you want to delete the routine")
             builder.setTitle("Shake to Confirm!")
             builder.setCancelable(false) //when user clicks outside dialog box, do not exit
 
             builder.setNegativeButton("Cancel") {
                     dialog, which -> dialog.cancel()
             }
-
-            //make late init or class variable
             alertDialog = builder.create()
             alertDialog.show()
         }
@@ -164,7 +144,20 @@ class MainRoutinesFragment : Fragment() {
                 if(alertDialog.isShowing) {
                     alertDialog.cancel()
                     //TO-DO: delete task/mark as done
-                    Toast.makeText(context, "Task Complete!", Toast.LENGTH_SHORT).show()
+                    if (routines.size >= 1) {
+                        routines.removeLast()
+                        routineArrayAdapter.notifyDataSetChanged()
+
+                        val data = hashMapOf("routines" to routines)
+                        databaseRef
+                            .collection("users")
+                            .document(firebaseAuth.currentUser?.email.toString())
+                            .set(data, SetOptions.merge())
+                            .addOnSuccessListener {
+                                Log.d("Firebase", "last routine deleted successfully")
+                            }
+                    }
+                    Toast.makeText(context, "Routine Deleted!", Toast.LENGTH_SHORT).show()
                 }
                 //close an unregister the listener in onStop or onDestroyview.
             }
