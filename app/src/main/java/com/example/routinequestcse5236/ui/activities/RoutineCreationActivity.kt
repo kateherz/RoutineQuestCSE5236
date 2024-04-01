@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.example.routinequestcse5236.R
 import com.example.routinequestcse5236.model.Routine
 import com.example.routinequestcse5236.model.Task
 import com.example.routinequestcse5236.model.TaskAdapter
+import com.example.routinequestcse5236.model.TaskDifficulty
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,6 +52,17 @@ class RoutineCreationActivity : AppCompatActivity() {
         }
         saveButton.setOnClickListener {v->
             Log.d("SaveButton", "Save button pressed")
+
+            for (i in 0 until taskList.size) {
+                val taskView = recyclerView.layoutManager?.findViewByPosition(i)
+                val taskName = taskView?.findViewById<EditText>(R.id.taskName)?.text.toString()
+                val spinner = taskView?.findViewById<Spinner>(R.id.difficultyDropdown)
+                val taskDifficultySelected = spinner?.selectedItem.toString()
+
+                taskList[i].name = taskName
+                taskList[i].difficulty = enumValueOf<TaskDifficulty>(taskDifficultySelected)
+            }
+
             var routine = Routine(questName?.text.toString(), taskList)
             val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
             docRef.get()
