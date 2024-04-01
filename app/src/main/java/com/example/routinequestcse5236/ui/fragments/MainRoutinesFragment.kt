@@ -165,10 +165,12 @@ class MainRoutinesFragment : Fragment() {
             if(acceleration>1 || acceleration<-1) {
                 Log.d("Sensor", "acceleration: $acceleration")
             }
-            if (acceleration > 5) {
-                //TO-DO: delete task/mark as done
-                alertDialog.cancel()
-                Toast.makeText(context, "Task Complete!", Toast.LENGTH_LONG).show()
+            if (acceleration > 10) {
+                if(alertDialog.isShowing) {
+                    alertDialog.cancel()
+                    //TO-DO: delete task/mark as done
+                    Toast.makeText(context, "Task Complete!", Toast.LENGTH_SHORT).show()
+                }
                 //close an unregister the listener in onStop or onDestroyview.
             }
         }
