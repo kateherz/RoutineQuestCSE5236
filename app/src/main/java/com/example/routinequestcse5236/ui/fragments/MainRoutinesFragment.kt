@@ -45,6 +45,7 @@ class MainRoutinesFragment : Fragment() {
         databaseRef = Firebase.firestore
         firebaseAuth = FirebaseAuth.getInstance()
         routines = ArrayList<HashMap<String,Any>>()
+        routineListView = v.findViewById(R.id.routine_list_view)
         var titles : ArrayList<String> = ArrayList()
 
         val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
@@ -60,7 +61,7 @@ class MainRoutinesFragment : Fragment() {
                     titles.add(titleString)
                 }
                 Log.d("docRef", titles.toString())
-                routineListView = v.findViewById(R.id.routine_list_view)
+
                 routineArrayAdapter = ArrayAdapter(
                     v.context, R.layout.list_item_routine, R.id.titleTextView, titles)
                 routineListView.adapter = routineArrayAdapter
@@ -113,6 +114,10 @@ class MainRoutinesFragment : Fragment() {
                 Log.d("", "get failed with ", exception)
             }
 
+        //routineListView = view.findViewById(R.id.routine_list_view)
+        routineListView.setOnItemClickListener { parent, view, position, id ->
+            Log.d("Routine List View Click Listener", position.toString() + " clicked")
+        }
         Log.d("MainRoutinesFragment", "routineAdapter instantiated")
     }
 }

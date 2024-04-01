@@ -40,8 +40,9 @@ class MainMenuActivity: AppCompatActivity() {
         }
         //TODO: figure this out
     }
+    /*
     fun onLayoutClick(view: View) {
         Log.d(" MainRoutinesFragment", "RoutineClicked")
         Toast.makeText(view.context, "Layout clicked", Toast.LENGTH_SHORT).show()
-    }
+    }*/
 }
