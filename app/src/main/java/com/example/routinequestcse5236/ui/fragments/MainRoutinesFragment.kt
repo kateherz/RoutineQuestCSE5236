@@ -17,6 +17,7 @@ import com.example.routinequestcse5236.R
 import com.example.routinequestcse5236.model.Routine
 import com.example.routinequestcse5236.model.RoutineAdapter
 import com.example.routinequestcse5236.ui.activities.RoutineCreationActivity
+import com.example.routinequestcse5236.ui.activities.TaskViewActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -117,6 +118,10 @@ class MainRoutinesFragment : Fragment() {
         //routineListView = view.findViewById(R.id.routine_list_view)
         routineListView.setOnItemClickListener { parent, view, position, id ->
             Log.d("Routine List View Click Listener", position.toString() + " clicked")
+            val clickedItem = routines[position]
+            val intent = Intent(requireContext(), TaskViewActivity::class.java)
+            intent.putExtra("Routine",clickedItem)
+            startActivity(intent)
         }
         Log.d("MainRoutinesFragment", "routineAdapter instantiated")
     }

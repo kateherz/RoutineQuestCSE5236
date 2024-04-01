@@ -28,6 +28,7 @@
         <activity
             android:name=".ui.activities.MainMenuActivity"/>
         <activity android:name=".ui.activities.RoutineCreationActivity"/>
+        <activity android:name=".ui.activities.TaskViewActivity"/>
     </application>
 
 </manifest>
