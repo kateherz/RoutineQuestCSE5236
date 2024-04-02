@@ -54,7 +54,8 @@ class AvatarCreationActivity : AppCompatActivity() {
                 val data = hashMapOf(
                     "avatar" to buttonID,
                     "username" to displayName.text.toString(),
-                    "routines" to ArrayList<Routine>()
+                    "routines" to ArrayList<Routine>(),
+                    "points" to 0
                 )
                 databaseRef
                     .collection("users")

@@ -14,6 +14,7 @@ import com.example.routinequestcse5236.R
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 
 class TaskAdapter(private val tasks: ArrayList<Task>) :
@@ -69,10 +70,39 @@ class TaskListAdapter(context: Context, private val titles: List<String>, privat
         databaseRef = Firebase.firestore
         firebaseAuth = FirebaseAuth.getInstance()
 
+
         var taskCompleted = tasks[position]
-        taskCompleted["completed"] = true
+        //taskCompleted["completed"] = true
+        var taskName = taskCompleted["name"]
         Log.d("awardPointsForTask", taskCompleted.toString())
-        //taskCompleted[""]
+
+        val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                var routines = document.data?.get("routines") as ArrayList<HashMap<String,Any>>
+                routines.forEach() { r ->
+                    var tasks = r["tasks"] as ArrayList<HashMap<String,Any>>
+                    tasks.forEach() { t ->
+                        if (t["name"] == taskName) {
+                            t["completed"] = true
+                            Log.d("awardPointsForTask", t.toString())
+                        }
+                    }
+                }
+                var currentPoints = document.data?.get("points") as Long
+                currentPoints++
+                val data = hashMapOf("points" to currentPoints, "routines" to routines)
+                databaseRef
+                    .collection("users")
+                    .document(firebaseAuth.currentUser?.email.toString())
+                    .set(data, SetOptions.merge())
+                    .addOnSuccessListener {
+                        Log.d("task checkbox", "points: " + currentPoints)
+                    }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("", "get failed with ", exception)
+            }
     }
 }
 

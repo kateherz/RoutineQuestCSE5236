@@ -18,6 +18,7 @@ class MainMenuActivity: AppCompatActivity() {
     private lateinit var createButton: Button
     private lateinit var avatarDisplay: ImageView
     private lateinit var welcomeMessage: TextView
+    private lateinit var levelsText: TextView
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
     //declare levels, xp of user, and total xp needed
@@ -30,6 +31,7 @@ class MainMenuActivity: AppCompatActivity() {
         setContentView(R.layout.activity_main_menu)
         avatarDisplay = findViewById(R.id.profilePicture)
         welcomeMessage = findViewById(R.id.welcome)
+        levelsText = findViewById(R.id.levelTextView)
 
         val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
         docRef.get()
@@ -37,17 +39,18 @@ class MainMenuActivity: AppCompatActivity() {
                 if (document != null) {
                     var chosenAvatar = document.data?.get("avatar") as String
                     var username = document.data?.get("username") as String
+                    var points = document.data?.get("points") as Long
                     val avatarId = resources.getIdentifier(chosenAvatar, "drawable", packageName)
                     avatarDisplay.setImageResource(avatarId)
                     var welcome = "Welcome, " + username + "! Let's tackle today!"
                     welcomeMessage.setText(welcome)
+                    var levelStr = "Total Points: " + points.toString()
+                    levelsText.setText(levelStr)
                 }
             }
 
         setUpCreateTasks()
         loadTaskFragments()
-
-
     }
 
     private fun setUpCreateTasks() {
