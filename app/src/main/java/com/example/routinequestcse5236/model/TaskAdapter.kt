@@ -1,14 +1,20 @@
 package com.example.routinequestcse5236.model
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.routinequestcse5236.R
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class TaskAdapter(private val tasks: ArrayList<Task>) :
     RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
@@ -41,6 +47,34 @@ class TaskAdapter(private val tasks: ArrayList<Task>) :
     }
 }
 
+class TaskListAdapter(context: Context, private val titles: List<String>, private val tasks: ArrayList<HashMap<String,Any>>)
+    : ArrayAdapter<String>(context, R.layout.list_item_routine, R.id.titleTextView, titles) {
+
+    private lateinit var databaseRef: FirebaseFirestore
+    private lateinit var firebaseAuth: FirebaseAuth
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val view = super.getView(position, convertView, parent)
+        val checkBox = view.findViewById<CheckBox>(R.id.completedCheckbox)
+
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                awardPointsForTask(position)
+            }
+        }
+
+        return view
+    }
+    private fun awardPointsForTask(position : Int) {
+        Log.d("awardPointsForTask", "Completed Task $position")
+        databaseRef = Firebase.firestore
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        var taskCompleted = tasks[position]
+        taskCompleted["completed"] = true
+        Log.d("awardPointsForTask", taskCompleted.toString())
+        //taskCompleted[""]
+    }
+}
 
 enum class TaskDifficulty {EASY, MEDIUM, HARD, EXPERT}
 

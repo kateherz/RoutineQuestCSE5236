@@ -70,8 +70,4 @@ class MainMenuActivity: AppCompatActivity() {
         //TODO: figure this out
     }
 
-    fun onCheckClick(view: View) {
-        Log.d(" MainRoutinesFragment", "This checkbox isn't gonna do anything")
-        //Toast.makeText(view.context, "Layout clicked", Toast.LENGTH_SHORT).show()
-    }
 }

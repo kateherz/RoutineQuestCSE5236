@@ -185,7 +185,7 @@ class MainRoutinesFragment : Fragment() {
             val intent = Intent(requireContext(), TaskViewActivity::class.java)
             /*val b : Bundle = Bundle()
             b.putSerializable("TaskList")*/
-            intent.putExtra("TaskList",clickedItem["tasks"] as ArrayList<Task>)
+            intent.putExtra("TaskList",clickedItem["tasks"] as ArrayList<HashMap<String,Any>>)
             Log.d("Routine List View Click Listener",
                 intent.getSerializableExtra("TaskList").toString()
             )
