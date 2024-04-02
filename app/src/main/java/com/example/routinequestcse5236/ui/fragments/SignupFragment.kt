@@ -1,5 +1,6 @@
 package com.example.routinequestcse5236.ui.fragments
 
+//import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.routinequestcse5236.R
 import com.example.routinequestcse5236.ui.activities.AvatarCreationActivity
 import com.example.routinequestcse5236.ui.activities.MainMenuActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
@@ -47,9 +52,23 @@ class SignupFragment : Fragment() {
             firebaseAuth
                 .signInWithEmailAndPassword(mEmailEditText?.text.toString(), mPasswordEditText?.text.toString())
                 .addOnCompleteListener {
-                    Log.d("Firebase", "login successful")
-                    val intent = Intent(v.context, MainMenuActivity::class.java)
-                    startActivity(intent)
+                    if(it.isSuccessful) {
+                        Log.d("Firebase", "login successful")
+                        val intent = Intent(v.context, MainMenuActivity::class.java)
+                        startActivity(intent)
+                    }
+                    else{
+                        try {
+                            throw it.getException()!!
+                        }
+                        catch (e: FirebaseAuthInvalidCredentialsException) {
+                            Toast.makeText(context, "Incorrect Username or Password", Toast.LENGTH_SHORT).show()
+                        }
+                        catch (e: Exception) {
+                            Log.d("Sign-up error", e.message!!)
+                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
         }
 
@@ -75,6 +94,19 @@ class SignupFragment : Fragment() {
                        val intent = Intent(v.context, AvatarCreationActivity::class.java)
                        startActivity(intent)
                    }
+                   else{
+                       try {
+                           throw it.getException()!!
+                       } catch (e: FirebaseAuthWeakPasswordException) {
+                           Toast.makeText(context, "Invalid Password: Must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                       }  catch (e: FirebaseAuthUserCollisionException) {
+                           Toast.makeText(context, "A user already exists under that email", Toast.LENGTH_SHORT).show()
+                       } catch (e: Exception) {
+                           Log.d("Sign-up error", e.message!!)
+                           Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                       }
+                   }
+
                }
 
         }
