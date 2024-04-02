@@ -42,8 +42,7 @@
             android:layout_centerHorizontal="true"
             android:text="Level: ##\n i/n XP"
             android:textSize="32sp"
-            android:textColor="@android:color/black"
-            />
+            android:textColor="@android:color/black"/>
 
         <Space
             android:id="@+id/space"

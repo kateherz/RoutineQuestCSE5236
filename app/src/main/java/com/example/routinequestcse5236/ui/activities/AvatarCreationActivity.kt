@@ -8,6 +8,7 @@ import android.widget.GridLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.routinequestcse5236.R
+import com.example.routinequestcse5236.model.Routine
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,7 +24,8 @@ class AvatarCreationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d("AvatarCreationActivity", "onCreate()")
         setContentView(R.layout.activity_avatar_creation)
-
+        databaseRef = Firebase.firestore
+        firebaseAuth = FirebaseAuth.getInstance()
 
         displayName = findViewById(R.id.display_name)
 
@@ -48,12 +50,11 @@ class AvatarCreationActivity : AppCompatActivity() {
             val buttonID = resources.getResourceEntryName(button.id)
             //set up view model and repo classes for later checkpoints
             button.setOnClickListener {
-                databaseRef = Firebase.firestore
-                firebaseAuth = FirebaseAuth.getInstance()
                 Log.d("ButtonClicked", "String Resource: $buttonID")
                 val data = hashMapOf(
                     "avatar" to buttonID,
-                    "username" to displayName.text.toString()
+                    "username" to displayName.text.toString(),
+                    "routines" to ArrayList<Routine>()
                 )
                 databaseRef
                     .collection("users")

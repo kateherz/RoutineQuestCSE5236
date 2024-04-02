@@ -2,7 +2,9 @@ package com.example.routinequestcse5236.ui.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.routinequestcse5236.R
 import com.example.routinequestcse5236.ui.fragments.MainRoutinesFragment
@@ -20,6 +22,7 @@ class MainMenuActivity: AppCompatActivity() {
     }
 
     private fun setUpCreateTasks() {
+        Log.d("main menu activity", "set up create tasks")
         createButton = findViewById(R.id.addMoreTasks)
         createButton.setOnClickListener {
             Log.d("setUpCreateTasks", "Create task button created")
@@ -38,4 +41,8 @@ class MainMenuActivity: AppCompatActivity() {
         //TODO: figure this out
     }
 
+    fun onCheckClick(view: View) {
+        Log.d(" MainRoutinesFragment", "This checkbox isn't gonna do anything")
+        //Toast.makeText(view.context, "Layout clicked", Toast.LENGTH_SHORT).show()
+    }
 }
