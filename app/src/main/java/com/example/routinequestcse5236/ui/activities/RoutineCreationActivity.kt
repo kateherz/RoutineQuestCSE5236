@@ -77,14 +77,17 @@ class RoutineCreationActivity : AppCompatActivity() {
                             .set(data, SetOptions.merge())
                             .addOnSuccessListener {
                                 Log.d("Firebase", "routine added successfully")
+                                val intent = Intent(v.context, MainMenuActivity::class.java)
+                                //createRoutineActivityResult.launch(intent)
+                                startActivity(intent)
                             }
                         Log.d("routCreatActiv", "updated routines: ${currentRoutines}")
                     }
                 }
 
-            val intent = Intent(v.context, MainMenuActivity::class.java)
-            //createRoutineActivityResult.launch(intent)
-            startActivity(intent)
+//            val intent = Intent(v.context, MainMenuActivity::class.java)
+//            //createRoutineActivityResult.launch(intent)
+//            startActivity(intent)
         }
     }
 

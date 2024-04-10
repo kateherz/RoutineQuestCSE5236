@@ -18,7 +18,6 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.routinequestcse5236.R
-import com.example.routinequestcse5236.model.Task
 import com.example.routinequestcse5236.ui.activities.RoutineCreationActivity
 import com.example.routinequestcse5236.ui.activities.TaskViewActivity
 import com.google.firebase.Firebase
