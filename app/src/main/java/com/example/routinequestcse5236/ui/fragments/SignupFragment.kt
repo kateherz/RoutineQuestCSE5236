@@ -82,7 +82,7 @@ class SignupFragment : Fragment() {
                        Log.d("Firebase", "sign up successful")
                        val user = hashMapOf(
                            "email" to mEmailEditText?.text.toString(),
-                           "password" to mPasswordEditText?.text.toString(),
+                           "password" to mPasswordEditText?.text.toString().hashCode(),
                        )
                        databaseRef
                            .collection("users")
