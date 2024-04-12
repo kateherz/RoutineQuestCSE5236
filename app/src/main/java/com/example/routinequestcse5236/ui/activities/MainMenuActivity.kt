@@ -73,4 +73,8 @@ class MainMenuActivity: AppCompatActivity() {
         //TODO: figure this out
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainMenuActivity", "onPause called")
+    }
 }
