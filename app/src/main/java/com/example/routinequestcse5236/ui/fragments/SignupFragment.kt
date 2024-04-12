@@ -91,8 +91,10 @@ class SignupFragment : Fragment() {
                            .addOnSuccessListener {
                                Log.d("Firebase", "user added to firestore")
                            }
+                       onDestroyView()
                        val intent = Intent(v.context, AvatarCreationActivity::class.java)
                        startActivity(intent)
+                       activity?.finish()
                    }
                    else{
                        try {
