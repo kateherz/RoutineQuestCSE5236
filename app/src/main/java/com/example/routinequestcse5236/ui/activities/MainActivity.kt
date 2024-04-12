@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onPause() {
         super.onPause()
-        Log.d("method call","pause method called")
+        Log.d("MainActivity","pause method called")
     }
 
     override fun onDestroy() {

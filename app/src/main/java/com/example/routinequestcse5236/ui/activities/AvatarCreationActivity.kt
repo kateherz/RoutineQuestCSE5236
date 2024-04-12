@@ -33,6 +33,7 @@ class AvatarCreationActivity : AppCompatActivity() {
         nextButton.setOnClickListener {
             val intent = Intent(this, AvatarCreationConfirmationActivity::class.java)
             startActivity(intent)
+            finish()
         }
         setupIconGrid()
     }
@@ -40,6 +41,11 @@ class AvatarCreationActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         Log.d("method call","pause method called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("onDestroy", "onDestroy called")
     }
 
     private fun setupIconGrid() {
