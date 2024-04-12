@@ -82,10 +82,12 @@ class RoutineCreationActivity : AppCompatActivity() {
                     }
                 }
 
-            val intent = Intent(v.context, MainMenuActivity::class.java)
-            //createRoutineActivityResult.launch(intent)
-            startActivity(intent)
+            finish()
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("RoutineCreationActivity", "onDestroy called")
+    }
 }
