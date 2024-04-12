@@ -50,7 +50,13 @@ class TaskViewActivity: AppCompatActivity() {
     }
 
     fun finishActivity(view: View) {
+        Log.d("TaskViewActivity", "finishActivity called")
         finish()
+    }
+
+    override fun onDestroy() {
+        Log.d("TaskViewActivity", "onDestroy Called")
+        super.onDestroy()
     }
 }
 

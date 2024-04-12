@@ -193,4 +193,14 @@ class MainRoutinesFragment : Fragment() {
         }
         Log.d("MainRoutinesFragment", "routineAdapter instantiated")
     }
+
+    override fun onPause() {
+        Log.d("MainRoutinesFragment", "onPause called")
+        super.onPause()
+    }
+
+    override fun onResume() {
+        Log.d("MainRoutinesFragment", "onResume called")
+        super.onResume()
+    }
 }
