@@ -18,6 +18,7 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.routinequestcse5236.R
+import com.example.routinequestcse5236.ui.activities.MainMenuActivity
 import com.example.routinequestcse5236.ui.activities.RoutineCreationActivity
 import com.example.routinequestcse5236.ui.activities.TaskViewActivity
 import com.google.firebase.Firebase
@@ -35,8 +36,8 @@ class MainRoutinesFragment : Fragment() {
     private lateinit var popUpButton: Button
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
-    private lateinit var routineListView: ListView
-    private lateinit var routineArrayAdapter: ArrayAdapter<String>
+    private var routineListView: ListView? = null
+    private var routineArrayAdapter: ArrayAdapter<String>? = null
     private lateinit var alertDialog: AlertDialog
 
     //fFor shake detection
@@ -58,7 +59,11 @@ class MainRoutinesFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         routines = ArrayList<HashMap<String,Any>>()
         routineListView = v.findViewById(R.id.routine_list_view)
+        routineArrayAdapter?.clear()
+        routineListView?.adapter = null
         var titles : ArrayList<String> = ArrayList()
+
+        //Log.d("MRF", "arr adap: " + routineArrayAdapter.toString() + "  list view: " + routineListView.toString())
 
         //Shake detection set-up
         sensorManager = context?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -87,7 +92,8 @@ class MainRoutinesFragment : Fragment() {
 
                 routineArrayAdapter = ArrayAdapter(
                     v.context, R.layout.list_item_routine, R.id.titleTextView, titles)
-                routineListView.adapter = routineArrayAdapter
+                routineListView?.adapter = routineArrayAdapter
+                //Log.d("MRF", "after adapter stuff")
             }
             .addOnFailureListener { exception ->
                 Log.d("", "get failed with ", exception)
@@ -102,20 +108,22 @@ class MainRoutinesFragment : Fragment() {
             Log.d("addButton", "intent not launched")
         }
 
+        val builder = AlertDialog.Builder(context)
+
+        builder.setMessage("Please shake your phone to confirm you want to delete the routine")
+        builder.setTitle("Shake to Confirm!")
+        builder.setCancelable(false) //when user clicks outside dialog box, do not exit
+
+        builder.setNegativeButton("Cancel") {
+                dialog, which -> dialog.cancel()
+        }
+        alertDialog = builder.create()
+
         deleteButton = v.findViewById(R.id.deleteTask)
         deleteButton.setOnClickListener {
             Log.d("deleteButton", "Button Pressed")
             Log.d("deleteButton", "current routines: " + routines)
-            val builder = AlertDialog.Builder(context)
 
-            builder.setMessage("Please shake your phone to confirm you want to delete the routine")
-            builder.setTitle("Shake to Confirm!")
-            builder.setCancelable(false) //when user clicks outside dialog box, do not exit
-
-            builder.setNegativeButton("Cancel") {
-                    dialog, which -> dialog.cancel()
-            }
-            alertDialog = builder.create()
             alertDialog.show()
         }
 
@@ -132,12 +140,12 @@ class MainRoutinesFragment : Fragment() {
             lastAcceleration = currentAcceleration
             currentAcceleration = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
             if(acceleration>1 || acceleration<-1) {
-                Log.d("Sensor", "current acceleration: $currentAcceleration")
+                //Log.d("Sensor", "current acceleration: $currentAcceleration")
             }
                 val delta: Float = currentAcceleration - lastAcceleration
             acceleration = acceleration * 0.9f + delta
             if(acceleration>1 || acceleration<-1) {
-                Log.d("Sensor", "acceleration: $acceleration")
+                //Log.d("Sensor", "acceleration: $acceleration")
             }
             if (acceleration > 10) {
                 if(alertDialog.isShowing) {
@@ -145,7 +153,7 @@ class MainRoutinesFragment : Fragment() {
                     //TO-DO: delete task/mark as done
                     if (routines.size >= 1) {
                         routines.removeLast()
-                        routineArrayAdapter.notifyDataSetChanged()
+                        routineArrayAdapter?.notifyDataSetChanged()
 
                         val data = hashMapOf("routines" to routines)
                         databaseRef
@@ -154,6 +162,12 @@ class MainRoutinesFragment : Fragment() {
                             .set(data, SetOptions.merge())
                             .addOnSuccessListener {
                                 Log.d("Firebase", "last routine deleted successfully")
+                                Log.d("Delete", "current context: " + parentFragmentManager.fragments.toString())
+                                var fragment = parentFragmentManager.fragments.removeFirst()
+                                parentFragmentManager.beginTransaction().add(R.id.routines, MainRoutinesFragment()).commit()
+                                val intent = Intent(activity?.applicationContext, MainMenuActivity::class.java)
+                                //createRoutineActivityResult.launch(intent)
+                                startActivity(intent)
                             }
                     }
                     Toast.makeText(context, "Routine Deleted!", Toast.LENGTH_SHORT).show()
@@ -178,7 +192,7 @@ class MainRoutinesFragment : Fragment() {
             }
 
         //routineListView = view.findViewById(R.id.routine_list_view)
-        routineListView.setOnItemClickListener { parent, view, position, id ->
+        routineListView?.setOnItemClickListener { parent, view, position, id ->
             Log.d("Routine List View Click Listener", position.toString() + " clicked")
             val clickedItem = routines[position]
             val intent = Intent(requireContext(), TaskViewActivity::class.java)
