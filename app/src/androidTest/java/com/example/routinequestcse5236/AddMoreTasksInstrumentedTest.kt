@@ -15,12 +15,11 @@ class RoutineCreationActivityTest {
 
     @Test
     fun testAddTaskButton() {
-        // Perform click on the add task button
         Espresso.onView(ViewMatchers.withId(R.id.addMoreRoutines))
             .perform(ViewActions.click())
 
-        // Check if the taskList has been updated and TaskAdapter has been notified
+        // Check if the taskList has been updated
         Espresso.onView(ViewMatchers.withId(R.id.taskRecyclerView))
-            .check(ViewAssertions.matches(ViewMatchers.hasChildCount(1))) // Assuming one task is added
+            .check(ViewAssertions.matches(ViewMatchers.hasChildCount(1)))
     }
 }
