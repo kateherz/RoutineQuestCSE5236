@@ -1,6 +1,7 @@
 package com.example.routinequestcse5236.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -51,6 +52,9 @@ class TaskViewActivity: AppCompatActivity() {
 
     fun finishActivity(view: View) {
         Log.d("TaskViewActivity", "finishActivity called")
+        val intent = Intent(view.context, MainMenuActivity::class.java)
+        //createRoutineActivityResult.launch(intent)
+        startActivity(intent)
         finish()
     }
 
