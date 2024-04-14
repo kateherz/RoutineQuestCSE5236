@@ -7,6 +7,8 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +20,7 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.routinequestcse5236.R
+import com.example.routinequestcse5236.ui.activities.MainMenuActivity
 import com.example.routinequestcse5236.ui.activities.RoutineCreationActivity
 import com.example.routinequestcse5236.ui.activities.TaskViewActivity
 import com.google.firebase.Firebase
@@ -32,11 +35,10 @@ class MainRoutinesFragment : Fragment() {
     private lateinit var addButton: Button
     private lateinit var deleteButton: Button
     private lateinit var routines : ArrayList<HashMap<String,Any>>
-    private lateinit var popUpButton: Button
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseRef: FirebaseFirestore
-    private lateinit var routineListView: ListView
-    private lateinit var routineArrayAdapter: ArrayAdapter<String>
+    private var routineListView: ListView? = null
+    private var routineArrayAdapter: ArrayAdapter<String>? = null
     private lateinit var alertDialog: AlertDialog
 
     //fFor shake detection
@@ -58,14 +60,14 @@ class MainRoutinesFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         routines = ArrayList<HashMap<String,Any>>()
         routineListView = v.findViewById(R.id.routine_list_view)
+        routineArrayAdapter?.clear()
+        routineListView?.adapter = null
         var titles : ArrayList<String> = ArrayList()
+
+        //Log.d("MRF", "arr adap: " + routineArrayAdapter.toString() + "  list view: " + routineListView.toString())
 
         //Shake detection set-up
         sensorManager = context?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-        Objects.requireNonNull(sensorManager)!!
-            .registerListener(sensorListener, sensorManager!!
-                .getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_NORMAL)
 
         acceleration = 10f
         currentAcceleration = SensorManager.GRAVITY_EARTH
@@ -87,7 +89,8 @@ class MainRoutinesFragment : Fragment() {
 
                 routineArrayAdapter = ArrayAdapter(
                     v.context, R.layout.list_item_routine, R.id.titleTextView, titles)
-                routineListView.adapter = routineArrayAdapter
+                routineListView?.adapter = routineArrayAdapter
+                //Log.d("MRF", "after adapter stuff")
             }
             .addOnFailureListener { exception ->
                 Log.d("", "get failed with ", exception)
@@ -102,26 +105,53 @@ class MainRoutinesFragment : Fragment() {
             Log.d("addButton", "intent not launched")
         }
 
+        val builder = AlertDialog.Builder(context)
+
+        builder.setMessage("Please shake your phone to confirm you want to delete the routine")
+        builder.setTitle("Shake to Confirm!")
+        builder.setCancelable(false) //when user clicks outside dialog box, do not exit
+
+        builder.setNegativeButton("Cancel") {
+                dialog, which -> dialog.cancel()
+        }
+        alertDialog = builder.create()
+
         deleteButton = v.findViewById(R.id.deleteTask)
         deleteButton.setOnClickListener {
             Log.d("deleteButton", "Button Pressed")
             Log.d("deleteButton", "current routines: " + routines)
-            val builder = AlertDialog.Builder(context)
 
-            builder.setMessage("Please shake your phone to confirm you want to delete the routine")
-            builder.setTitle("Shake to Confirm!")
-            builder.setCancelable(false) //when user clicks outside dialog box, do not exit
+            Objects.requireNonNull(sensorManager)!!
+                .registerListener(sensorListener, sensorManager!!
+                    .getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_NORMAL)
 
-            builder.setNegativeButton("Cancel") {
-                    dialog, which -> dialog.cancel()
-            }
-            alertDialog = builder.create()
             alertDialog.show()
         }
 
         return v
     }
 
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
+        }
+        return false
+    }
     private val sensorListener: SensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
 
@@ -131,33 +161,46 @@ class MainRoutinesFragment : Fragment() {
             val z = event.values[2]
             lastAcceleration = currentAcceleration
             currentAcceleration = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
-            if(acceleration>1 || acceleration<-1) {
-                Log.d("Sensor", "current acceleration: $currentAcceleration")
-            }
-                val delta: Float = currentAcceleration - lastAcceleration
+
+            val delta: Float = currentAcceleration - lastAcceleration
             acceleration = acceleration * 0.9f + delta
-            if(acceleration>1 || acceleration<-1) {
-                Log.d("Sensor", "acceleration: $acceleration")
-            }
+
             if (acceleration > 10) {
                 if(alertDialog.isShowing) {
                     alertDialog.cancel()
+                    sensorManager?.unregisterListener(this);
                     //TO-DO: delete task/mark as done
-                    if (routines.size >= 1) {
-                        routines.removeLast()
-                        routineArrayAdapter.notifyDataSetChanged()
+                        if (routines.size >= 1) {
+                            routines.removeLast()
+                            routineArrayAdapter?.notifyDataSetChanged()
 
-                        val data = hashMapOf("routines" to routines)
-                        databaseRef
-                            .collection("users")
-                            .document(firebaseAuth.currentUser?.email.toString())
-                            .set(data, SetOptions.merge())
-                            .addOnSuccessListener {
-                                Log.d("Firebase", "last routine deleted successfully")
-                            }
+                            val data = hashMapOf("routines" to routines)
+                            databaseRef
+                                .collection("users")
+                                .document(firebaseAuth.currentUser?.email.toString())
+                                .set(data, SetOptions.merge())
+                                .addOnSuccessListener {
+                                    Log.d("Firebase", "last routine deleted successfully")
+                                    Log.d(
+                                        "Delete",
+                                        "current context: " + parentFragmentManager.fragments.toString()
+                                    )
+                                    var fragment = parentFragmentManager.fragments.removeFirst()
+                                    parentFragmentManager.beginTransaction()
+                                        .add(R.id.routines, MainRoutinesFragment()).commit()
+                                    val intent = Intent(
+                                        activity?.applicationContext,
+                                        MainMenuActivity::class.java
+                                    )
+                                    //createRoutineActivityResult.launch(intent)
+                                    startActivity(intent)
+                                }
+                        }
+                        Toast.makeText(context, "Routine Deleted!", Toast.LENGTH_SHORT).show()
+                        if(context?.let { isOnline(it) } == false){
+                            Toast.makeText(context, "No Connection! Please reconnect to save changes", Toast.LENGTH_LONG).show()
+                        }
                     }
-                    Toast.makeText(context, "Routine Deleted!", Toast.LENGTH_SHORT).show()
-                }
                 //close an unregister the listener in onStop or onDestroyview.
             }
         }
@@ -178,7 +221,7 @@ class MainRoutinesFragment : Fragment() {
             }
 
         //routineListView = view.findViewById(R.id.routine_list_view)
-        routineListView.setOnItemClickListener { parent, view, position, id ->
+        routineListView?.setOnItemClickListener { parent, view, position, id ->
             Log.d("Routine List View Click Listener", position.toString() + " clicked")
             val clickedItem = routines[position]
             val intent = Intent(requireContext(), TaskViewActivity::class.java)

@@ -1,13 +1,16 @@
 package com.example.routinequestcse5236.ui.activities
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.routinequestcse5236.R
@@ -52,7 +55,9 @@ class RoutineCreationActivity : AppCompatActivity() {
         }
         saveButton.setOnClickListener {v->
             Log.d("SaveButton", "Save button pressed")
-
+            if(isOnline(this)==false){
+                Toast.makeText(this, "No Connection! Please reconnect to save new routine!", Toast.LENGTH_LONG).show()
+            }
             for (i in 0 until taskList.size) {
                 val taskView = recyclerView.layoutManager?.findViewByPosition(i)
                 val taskName = taskView?.findViewById<EditText>(R.id.taskName)?.text.toString()
@@ -77,6 +82,9 @@ class RoutineCreationActivity : AppCompatActivity() {
                             .set(data, SetOptions.merge())
                             .addOnSuccessListener {
                                 Log.d("Firebase", "routine added successfully")
+                                val intent = Intent(v.context, MainMenuActivity::class.java)
+                                //createRoutineActivityResult.launch(intent)
+                                startActivity(intent)
                             }
                         Log.d("routCreatActiv", "updated routines: ${currentRoutines}")
                     }
@@ -88,5 +96,27 @@ class RoutineCreationActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d("RoutineCreationActivity", "onDestroy called")
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
+        }
+        return false
     }
 }
