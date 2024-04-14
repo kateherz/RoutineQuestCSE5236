@@ -25,7 +25,7 @@ class RoutineAdapterInstrumentedTestAdapterTest {
     }
 
     @Test
-    fun tasksAdapterViewRecycling() {
+    fun routineAdapterViewRecycling() {
 
         //setup input
         val tasks: ArrayList<Task> = java.util.ArrayList()
