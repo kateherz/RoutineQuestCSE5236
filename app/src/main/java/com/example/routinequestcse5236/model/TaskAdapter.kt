@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.routinequestcse5236.R
 import com.google.firebase.Firebase
@@ -56,13 +57,40 @@ class TaskListAdapter(context: Context, private val titles: List<String>, privat
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = super.getView(position, convertView, parent)
         val checkBox = view.findViewById<CheckBox>(R.id.completedCheckbox)
+        databaseRef = Firebase.firestore
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        var task = tasks[position]
+        var taskName = task["name"]
+
+        val docRef = databaseRef.collection("users").document(firebaseAuth.currentUser?.email.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                var routines = document.data?.get("routines") as ArrayList<HashMap<String, Any>>
+                routines.forEach() { r ->
+
+                        var tasks = r["tasks"] as ArrayList<HashMap<String, Any>>
+                        tasks.forEach() { t ->
+                            if (t["name"] == taskName) {
+                                if (t["completed"] == true) {
+                                    checkBox.isChecked = true
+                                    checkBox.isClickable = false
+                                }
+                            }
+                        }
+
+                }
+            }
 
         checkBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 awardPointsForTask(position)
             }
+            else {
+                checkBox.isChecked = true
+                checkBox.isClickable = false
+            }
         }
-
         return view
     }
     private fun awardPointsForTask(position : Int) {
@@ -80,17 +108,18 @@ class TaskListAdapter(context: Context, private val titles: List<String>, privat
         docRef.get()
             .addOnSuccessListener { document ->
                 var routines = document.data?.get("routines") as ArrayList<HashMap<String,Any>>
+                var currentPoints = document.data?.get("points") as Long
                 routines.forEach() { r ->
                     var tasks = r["tasks"] as ArrayList<HashMap<String,Any>>
                     tasks.forEach() { t ->
-                        if (t["name"] == taskName) {
+                        if (t["name"] == taskName && t["completed"] == false) {
                             t["completed"] = true
                             Log.d("awardPointsForTask", t.toString())
+                            currentPoints++
+
                         }
                     }
                 }
-                var currentPoints = document.data?.get("points") as Long
-                currentPoints++
                 val data = hashMapOf("points" to currentPoints, "routines" to routines)
                 databaseRef
                     .collection("users")
