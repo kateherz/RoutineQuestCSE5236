@@ -2,7 +2,16 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="AvatarCreationActivityTest">
+        <State />
+      </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="testAvatarIdMatchesButtonId()">
+        <State />
+      </entry>
+      <entry key="testNextButtonNavigation()">
         <State />
       </entry>
     </value>

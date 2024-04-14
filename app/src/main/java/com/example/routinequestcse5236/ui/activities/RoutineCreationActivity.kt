@@ -81,7 +81,6 @@ class RoutineCreationActivity : AppCompatActivity() {
                         Log.d("routCreatActiv", "updated routines: ${currentRoutines}")
                     }
                 }
-
             finish()
         }
     }
