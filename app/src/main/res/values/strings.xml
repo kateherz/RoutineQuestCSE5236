@@ -16,7 +16,7 @@
     <string-array name="dropdown_items">
         <item>EASY</item>
         <item>MEDIUM</item>
-        <item>DIFFICULT</item>
+        <item>HARD</item>
         <item>EXPERT</item>
     </string-array>
 </resources>
