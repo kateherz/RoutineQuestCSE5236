@@ -1,6 +1,8 @@
 package com.example.routinequestcse5236.model
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.routinequestcse5236.R
 import com.google.firebase.Firebase
@@ -48,6 +51,28 @@ class TaskAdapter(private val tasks: ArrayList<Task>) :
     }
 }
 
+//https://stackoverflow.com/questions/51141970/check-internet-connectivity-android-in-kotlin
+fun isOnline(context: Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (connectivityManager != null) {
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
+            }
+        }
+    }
+    return false
+}
 class TaskListAdapter(context: Context, private val titles: List<String>, private val tasks: ArrayList<HashMap<String,Any>>)
     : ArrayAdapter<String>(context, R.layout.list_item_routine, R.id.titleTextView, titles) {
 
@@ -82,13 +107,16 @@ class TaskListAdapter(context: Context, private val titles: List<String>, privat
             }
 
         checkBox.setOnCheckedChangeListener { _, isChecked ->
+            if(isOnline(context)== false) {
+                Toast.makeText(context, "No Connection! Please reconnect to save changes", Toast.LENGTH_LONG).show()
+            }
             if (isChecked) {
                 awardPointsForTask(position)
-            }
-            else {
+            } else {
                 checkBox.isChecked = true
                 checkBox.isClickable = false
             }
+
         }
         return view
     }
