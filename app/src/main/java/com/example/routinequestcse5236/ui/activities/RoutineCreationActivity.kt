@@ -98,6 +98,7 @@ class RoutineCreationActivity : AppCompatActivity() {
         Log.d("RoutineCreationActivity", "onDestroy called")
     }
 
+    //https://stackoverflow.com/questions/51141970/check-internet-connectivity-android-in-kotlin
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
