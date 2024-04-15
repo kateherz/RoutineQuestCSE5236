@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.routinequestcse5236.R
 import com.google.firebase.Firebase
@@ -116,8 +115,10 @@ class TaskListAdapter(context: Context, private val titles: List<String>, privat
                             t["completed"] = true
                             Log.d("awardPointsForTask", t.toString())
                             currentPoints++
-
                         }
+                    }
+                    if (allTasksComplete(tasks)) {
+                        r["completed"] = true
                     }
                 }
                 val data = hashMapOf("points" to currentPoints, "routines" to routines)
@@ -132,6 +133,16 @@ class TaskListAdapter(context: Context, private val titles: List<String>, privat
             .addOnFailureListener { exception ->
                 Log.d("", "get failed with ", exception)
             }
+    }
+
+    private fun allTasksComplete(tasks: ArrayList<HashMap<String, Any>>): Boolean {
+        var allComplete = true
+        tasks.forEach() {t ->
+            if (t["completed"] == false) {
+                allComplete = false
+            }
+        }
+        return allComplete
     }
 }
 

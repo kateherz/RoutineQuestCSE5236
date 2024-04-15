@@ -80,15 +80,23 @@ class MainRoutinesFragment : Fragment() {
                     routines = document.data?.get("routines") as ArrayList<HashMap<String,Any>>
                     Log.d("", "DocumentSnapshot data: ${document.data?.get("routines")}")
                 routines.forEach() {r ->
+                    var tasks = r["tasks"] as ArrayList<HashMap<String,Any>>
+                    if (allTasksComplete(tasks)) {
+                        r["completed"] = true
+                    }
                     Log.d("Titles", r.toString())
                     var numTasks = r["tasks"].toString().split("{").size - 1
-                    var titleString = r["title"].toString() + "                # of Tasks: " + numTasks.toString()
+                    var titleString =
+                        r["title"].toString() +
+                                "                # of Tasks: " + numTasks.toString() +
+                                "       Completed: " + r["completed"]
                     titles.add(titleString)
+
                 }
                 Log.d("docRef", titles.toString())
 
                 routineArrayAdapter = ArrayAdapter(
-                    v.context, R.layout.list_item_routine, R.id.titleTextView, titles)
+                    v.context, R.layout.list_item_routine_two, R.id.titleTextView, titles)
                 routineListView?.adapter = routineArrayAdapter
                 //Log.d("MRF", "after adapter stuff")
             }
@@ -244,5 +252,15 @@ class MainRoutinesFragment : Fragment() {
     override fun onResume() {
         Log.d("MainRoutinesFragment", "onResume called")
         super.onResume()
+    }
+
+    private fun allTasksComplete(tasks: ArrayList<HashMap<String, Any>>): Boolean {
+        var allComplete = true
+        tasks.forEach() {t ->
+            if (t["completed"] == false) {
+                allComplete = false
+            }
+        }
+        return allComplete
     }
 }
