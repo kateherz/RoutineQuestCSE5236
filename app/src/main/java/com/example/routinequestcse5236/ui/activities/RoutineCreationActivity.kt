@@ -55,6 +55,7 @@ class RoutineCreationActivity : AppCompatActivity() {
         }
         saveButton.setOnClickListener {v->
             Log.d("SaveButton", "Save button pressed")
+            if(isBlank(questName?.text.toString())==false){
             if(isOnline(this)==false){
                 Toast.makeText(this, "No Connection! Please reconnect to save new routine!", Toast.LENGTH_LONG).show()
             }
@@ -90,6 +91,10 @@ class RoutineCreationActivity : AppCompatActivity() {
                     }
                 }
             finish()
+            }
+            else{
+                Toast.makeText(this,"Please do not leave the title blank", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -97,7 +102,9 @@ class RoutineCreationActivity : AppCompatActivity() {
         super.onDestroy()
         Log.d("RoutineCreationActivity", "onDestroy called")
     }
-
+    fun isBlank(string: String): Boolean{
+        return (string == null || ( string is String  && string.trim().length == 0));
+    }
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
